@@ -1,0 +1,32 @@
+<!doctype html><html lang="en">    <head>
+<meta charset='utf-8'/>
+		<title>
+			Preview
+		</title>
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+		<!--[if lte IE 8]>
+			<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+		<![endif]-->
+		<style>
+			html { height: 100% }
+			body { height: 100%; margin: 0; padding: 0;}
+			#map{ height: 100% }
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+        <script src="shp.js"></script>
+        <script src="catiline.js"></script>
+        <script src="leaflet.shpfile.js"></script>
+		<script>
+		var m = L.map('map').setView([ 42.09618442380296, -71.5045166015625],8);
+        var watercolor = L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',{attribution:'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(m);
+		
+    	 var shpfile = new L.Shapefile('congress.zip');
+         shpfile.addTo(m);
+		</script>
+	</body>
+</html>
+
+
