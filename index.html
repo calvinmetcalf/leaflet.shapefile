@@ -23,7 +23,13 @@
 		var m = L.map('map').setView([ 42.09618442380296, -71.5045166015625],8);
         var watercolor = L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',{attribution:'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'}).addTo(m);
 		
-    	 var shpfile = new L.Shapefile('congress.zip');
+    	 var shpfile = new L.Shapefile('congress.zip',{onEachFeature:function(feature, layer) {
+    	if (feature.properties) {
+			layer.bindPopup(Object.keys(feature.properties).map(function(k){
+				return k + ": " + feature.properties[k] ;
+			}).join("<br />"),{maxHeight:200});
+    	}
+	}});
          shpfile.addTo(m);
 		</script>
 	</body>

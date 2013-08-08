@@ -15,7 +15,7 @@ L.Shapefile =L.GeoJSON.extend({
             return self.addData(file);
         }
         if(self.worker){
-            self.worker.data(file).then(function(data){
+            self.worker.data(cw.makeUrl(file)).then(function(data){
                 self.addData(data);
             });
         }else{
