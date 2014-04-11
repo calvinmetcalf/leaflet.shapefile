@@ -11,16 +11,21 @@ L.Shapefile =L.GeoJSON.extend({
     },
     addFileData:function(file){
         var self = this;
+        self.fire('loading');
         if(typeof file !== 'string' && !('byteLength' in file)){
-            return self.addData(file);
+            var data = self.addData(file);
+            self.fire('load');
+            return data;
         }
         if(self.worker){
             self.worker.data(cw.makeUrl(file)).then(function(data){
                 self.addData(data);
+                self.fire('load');
             });
         }else{
             shp(file).then(function(data){
                 self.addData(data);
+                self.fire('load');
             });
         }
         return this;
