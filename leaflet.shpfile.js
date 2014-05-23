@@ -21,6 +21,7 @@ L.Shapefile =L.GeoJSON.extend({
             self.worker.data(cw.makeUrl(file)).then(function(data){
                 self.addData(data);
                 self.fire('data:loaded');
+                self.worker.close();
             });
         }else{
             shp(file).then(function(data){
