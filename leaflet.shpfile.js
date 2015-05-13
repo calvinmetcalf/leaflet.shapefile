@@ -1,8 +1,11 @@
 L.Shapefile =L.GeoJSON.extend({
-    initialize: function (file, options) {
+    initialize: function (file, options, importUrl) {
         if(typeof cw !== 'undefined'){
+            if (typeof importUrl === 'undefined') {
+            	importUrl = 'shp.js';
+            }
             this.worker = cw(function(data,cb){
-                importScripts('shp.js');
+                importScripts(importUrl);
 	            shp(data).then(cb);
             });
         }
@@ -33,6 +36,6 @@ L.Shapefile =L.GeoJSON.extend({
     }
 });
 
-L.shapefile= function(a,b){
-    return new L.Shapefile(a,b);
+L.shapefile= function(a,b,c){
+    return new L.Shapefile(a,b,c);
 }
