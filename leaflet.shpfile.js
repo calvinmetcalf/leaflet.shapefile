@@ -1,10 +1,8 @@
 L.Shapefile =L.GeoJSON.extend({
     initialize: function (file, options, importUrl) {
         if(typeof cw !== 'undefined'){
-            this.worker = cw(function(data,cb){
-                importScripts(importUrl || 'shp.js');
-	            shp(data).then(cb);
-            });
+            importUrl = importUrl || 'shp.js';
+            this.worker = cw(new Function('data', 'cb', 'importScripts("' + importUrl + '");shp(data).then(cb);'));
         }
         L.GeoJSON.prototype.initialize.call(this,{features:[]},options);
         this.addFileData(file);
