@@ -1,59 +1,59 @@
 'use strict';
 
 /* global cw, shp */
-L.Shapefile =L.GeoJSON.extend({
+L.Shapefile = L.GeoJSON.extend({
   options: {
-    isArrayBufer: false,
     importUrl: 'shp.js'
   },
 
-  initialize: function (file, options) {
+  initialize: function(file, options) {
     L.Util.setOptions(this, options);
-    if(typeof cw !== 'undefined'){
-      /*jslint evil: true */
-      if(!options.isArrayBufer) {
+    if (typeof cw !== 'undefined') {
+      /*eslint-disable no-new-func*/
+      if (!options.isArrayBufer) {
         this.worker = cw(new Function('data', 'cb', 'importScripts("' + this.options.importUrl + '");shp(data).then(cb);'));
       } else {
         this.worker = cw(new Function('data', 'importScripts("' + this.options.importUrl + '"); return shp.parseZip(data);'));
       }
+      /*eslint-enable no-new-func*/
     }
-    L.GeoJSON.prototype.initialize.call(this, {features:[]}, options);
+    L.GeoJSON.prototype.initialize.call(this, {
+      features: []
+    }, options);
     this.addFileData(file);
   },
 
-  addFileData:function(file) {
+  addFileData: function(file) {
     var self = this;
-    self.fire('data:loading');
-    if(typeof file !== 'string' && !('byteLength' in file)) {
-      var data = self.addData(file);
-      self.fire('data:loaded');
+    this.fire('data:loading');
+    if (typeof file !== 'string' && !('byteLength' in file)) {
+      var data = this.addData(file);
+      this.fire('data:loaded');
       return data;
     }
-
-    if(self.worker) {
-      if(!self.options.isArrayBufer) {
-        self.worker.data(cw.makeUrl(file)).then(function(data){
-          self.addData(data);
-          self.fire('data:loaded');
-          self.worker.close();
-        });
-      } else {
-        self.worker.data(file, [file]).then(function(data){
-          self.addData(data);
-          self.fire('data:loaded');
-          self.worker.close();
-        });
-      }
-    } else{
-      shp(file).then(function(data){
+    if (!this.worker) {
+      shp(file).then(function(data) {
         self.addData(data);
         self.fire('data:loaded');
       });
+      return this;
     }
+    var promise;
+    if (this.options.isArrayBufer) {
+      promise = this.worker.data(file, [file]);
+    } else {
+      promise = this.worker.data(cw.makeUrl(file));
+    }
+
+    promise.then(function(data) {
+      self.addData(data);
+      self.fire('data:loaded');
+      self.worker.close();
+    });
     return this;
   }
 });
 
-L.shapefile= function(a,b,c){
-  return new L.Shapefile(a,b,c);
+L.shapefile = function(a, b, c) {
+  return new L.Shapefile(a, b, c);
 };
