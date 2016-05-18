@@ -5,8 +5,8 @@ Also on JSFiddle: http://jsfiddle.net/ashalota/ov0p4ajh/10/ -->
     <title>Simple File Upload Demo for leaflet.shapefile</title>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css">
     <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
-	<script src="https://cdn.rawgit.com/calvinmetcalf/shapefile-js/gh-pages/dist/shp.js"></script>
-	<script src="https://cdn.rawgit.com/calvinmetcalf/leaflet.shapefile/gh-pages/leaflet.shpfile.js"></script>
+    <script src="https://cdn.rawgit.com/calvinmetcalf/shapefile-js/gh-pages/dist/shp.js"></script>
+    <script src="https://cdn.rawgit.com/calvinmetcalf/leaflet.shapefile/gh-pages/leaflet.shpfile.js"></script>
     
     <style>
       #map {
@@ -20,11 +20,11 @@ Also on JSFiddle: http://jsfiddle.net/ashalota/ov0p4ajh/10/ -->
   </head>
   <body>
 	<div id="map"></div>
-	<label for="input">Select a zipped shapefile:</label> <input type="file" id="file"> <br>
-	<input type="submit" id="submit"> <span id="warning"></span>
+	<label for="input">Select a zipped shapefile:</label> <input type="file" id="file" accept=".zip"> <br>
+	<input type="submit" id="submit">
 
 	<script>
-	map = L.map('map', {
+	var map = L.map('map', {
 		center: [7.2, 40.9],
 		zoom: 2
 	});
@@ -41,14 +41,7 @@ Also on JSFiddle: http://jsfiddle.net/ashalota/ov0p4ajh/10/ -->
 	  }
 	  
 	  var file = files[0];
-	  
-	  if (file.name.slice(-3) != 'zip'){ //Demo only tested for .zip. All others, return.
-			document.getElementById('warning').innerHTML = 'Select .zip file';  	
-		return;
-	  } else {
-		document.getElementById('warning').innerHTML = ''; //clear warning message.
-		handleZipFile(file);
-	  }
+	  handleZipFile(file);
 	};
 
 	//More info: https://developer.mozilla.org/en-US/docs/Web/API/FileReader
