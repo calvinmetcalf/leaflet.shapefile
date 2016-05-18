@@ -1,0 +1,76 @@
+<!-- A simplified demo of using the file uploader to add a zipped shapefile. 
+Also on JSFiddle: http://jsfiddle.net/ashalota/ov0p4ajh/10/ -->
+<html>
+  <head>
+    <title>Simple File Upload Demo for leaflet.shapefile</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css">
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
+	<script src="https://cdn.rawgit.com/calvinmetcalf/shapefile-js/gh-pages/dist/shp.js"></script>
+	<script src="https://cdn.rawgit.com/calvinmetcalf/leaflet.shapefile/gh-pages/leaflet.shpfile.js"></script>
+    
+    <style>
+      #map {
+        height: 500px;
+      }
+  
+      input {
+        margin-top:10px;
+      }
+    </style>
+  </head>
+  <body>
+	<div id="map"></div>
+	<label for="input">Select a zipped shapefile:</label> <input type="file" id="file"> <br>
+	<input type="submit" id="submit"> <span id="warning"></span>
+
+	<script>
+	map = L.map('map', {
+		center: [7.2, 40.9],
+		zoom: 2
+	});
+
+	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	}).addTo(map);
+
+
+	document.getElementById("submit").onclick =  function(e){
+		var files = document.getElementById('file').files;
+		if (files.length == 0) {
+		  return; //do nothing if no file given yet
+	  }
+	  
+	  var file = files[0];
+	  
+	  if (file.name.slice(-3) != 'zip'){ //Demo only tested for .zip. All others, return.
+			document.getElementById('warning').innerHTML = 'Select .zip file';  	
+		return;
+	  } else {
+		document.getElementById('warning').innerHTML = ''; //clear warning message.
+		handleZipFile(file);
+	  }
+	};
+
+	//More info: https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+	function handleZipFile(file){
+		var reader = new FileReader();
+	  reader.onload = function(){
+		  if (reader.readyState != 2 || reader.error){
+			  return;
+		  } else {
+			  convertToLayer(reader.result);
+		}
+	  }
+	  reader.readAsArrayBuffer(file);
+	}
+
+	function convertToLayer(buffer){
+		shp(buffer).then(function(geojson){	//More info: https://github.com/calvinmetcalf/shapefile-js
+		var layer = L.shapefile(geojson).addTo(map);//More info: https://github.com/calvinmetcalf/leaflet.shapefile
+		console.log(layer);
+	  });
+	}
+	</script>
+
+ </body>
+ </html>
