@@ -1,5 +1,4 @@
-<!-- A simplified demo of using the file uploader to add a zipped shapefile. 
-Also on JSFiddle: http://jsfiddle.net/ashalota/ov0p4ajh/10/ -->
+<!-- A simplified demo of using the file uploader to add a zipped shapefile.  -->
 <html>
   <head>
     <title>Simple File Upload Demo for leaflet.shapefile</title>
@@ -33,7 +32,6 @@ Also on JSFiddle: http://jsfiddle.net/ashalota/ov0p4ajh/10/ -->
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 	}).addTo(map);
 
-
 	document.getElementById("submit").onclick =  function(e){
 		var files = document.getElementById('file').files;
 		if (files.length == 0) {
@@ -58,9 +56,7 @@ Also on JSFiddle: http://jsfiddle.net/ashalota/ov0p4ajh/10/ -->
 	}
 
 	function convertToLayer(buffer){
-		shp(buffer).then(function(geojson){	//More info: https://github.com/calvinmetcalf/shapefile-js
-		var layer = L.shapefile(geojson).addTo(map);//More info: https://github.com/calvinmetcalf/leaflet.shapefile
-		console.log(layer);
+		var layer = L.shapefile(buffer).addTo(map);
 	  });
 	}
 	</script>
