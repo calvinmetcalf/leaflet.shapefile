@@ -12003,7 +12003,8 @@ function dbfRowHeader(buffer){
 }
 function rowFuncs(buffer,offset,len,type){
 	var data = (new Uint8Array(buffer,offset,len));
-	var textData = String.fromCharCode.apply(this,data).replace(/\0|\s+$/g,'');
+	var encodedData = String.fromCharCode.apply(this,data).replace(/\0|\s+$/g,'');
+	var textData = decodeURIComponent(escape(encodedData));
 	switch(type){
 		case 'N':
 		case 'F':
