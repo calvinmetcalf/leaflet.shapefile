@@ -35,7 +35,9 @@ L.Shapefile = L.GeoJSON.extend({
       shp(file).then(function(data) {
         self.addData(data);
         self.fire('data:loaded');
-      });
+      }).catch(function(err) {
+        self.fire('data:error', err);
+      })
       return this;
     }
     var promise;
@@ -49,7 +51,9 @@ L.Shapefile = L.GeoJSON.extend({
       self.addData(data);
       self.fire('data:loaded');
       self.worker.close();
-    });
+    }).catch(function(err) {
+      self.fire('data:error', err);
+    })
     return this;
   }
 });
