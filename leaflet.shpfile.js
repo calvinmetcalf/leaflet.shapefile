@@ -1,6 +1,6 @@
 'use strict';
 
-/* global cw, shp */
+/* global cw, shp, L */
 L.Shapefile = L.GeoJSON.extend({
   options: {
     importUrl: 'shp.js'
@@ -35,6 +35,8 @@ L.Shapefile = L.GeoJSON.extend({
       shp(file).then(function(data) {
         self.addData(data);
         self.fire('data:loaded');
+      }, function(e) {
+        self.fire('data:error', e);
       });
       return this;
     }
@@ -49,6 +51,8 @@ L.Shapefile = L.GeoJSON.extend({
       self.addData(data);
       self.fire('data:loaded');
       self.worker.close();
+    }, function(e) {
+      self.fire('data:error', e);
     });
     return this;
   }
