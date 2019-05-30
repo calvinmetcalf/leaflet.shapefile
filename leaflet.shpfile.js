@@ -51,7 +51,7 @@ L.Shapefile = L.GeoJSON.extend({
       self.addData(data);
       self.fire('data:loaded');
       self.worker.close();
-    }).catch(function(err) {
+    }).then(function() {}, function(err) {
       self.fire('data:error', err);
     })
     return this;
