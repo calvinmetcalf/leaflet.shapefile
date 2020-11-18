@@ -41,7 +41,7 @@ L.Shapefile = L.GeoJSON.extend({
       return this;
     }
     var promise;
-    if (this.options.isArrayBufer) {
+    if (this.options.isArrayBuffer) {
       promise = this.worker.data(file, [file]);
     } else {
       promise = this.worker.data(cw.makeUrl(file));
